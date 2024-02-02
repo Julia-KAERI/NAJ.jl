@@ -1,0 +1,35 @@
+# This file is machine-generated - editing it directly is not advised
+
+julia_version = "1.10.0"
+manifest_format = "2.0"
+project_hash = "ab05809899ea205ea7b6d12557c7773ae4187839"
+
+[[deps.Artifacts]]
+uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
+
+[[deps.CompilerSupportLibraries_jll]]
+deps = ["Artifacts", "Libdl"]
+uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
+version = "1.0.5+1"
+
+[[deps.Example]]
+git-tree-sha1 = "46e44e869b4d90b96bd8ed1fdcf32244fddfb6cc"
+uuid = "7876af07-990d-54b4-ab0e-23690620f79a"
+version = "0.5.3"
+
+[[deps.Libdl]]
+uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
+
+[[deps.LinearAlgebra]]
+deps = ["Libdl", "OpenBLAS_jll", "libblastrampoline_jll"]
+uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+
+[[deps.OpenBLAS_jll]]
+deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
+uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
+version = "0.3.23+2"
+
+[[deps.libblastrampoline_jll]]
+deps = ["Artifacts", "Libdl"]
+uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
+version = "5.8.0+1"
