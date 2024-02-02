@@ -1,6 +1,3 @@
-# include("simplepolynomials.jl")
-
-
 function get_cubic_spline_coefficients(xp, yp, bc_kind = :cubic_spline_naturalbc, bc=nothing)
     @assert length(xp) == length(yp)
     @assert bc_kind ∈ (:cubic_spline_clampedbc, :cubic_spline_naturalbc)

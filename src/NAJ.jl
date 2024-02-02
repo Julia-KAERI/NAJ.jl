@@ -1,5 +1,7 @@
 module NAJ
 
+using LinearAlgebra, SparseArrays
+
 include("simplepolynomials.jl")
 include("interpolations.jl")
 
