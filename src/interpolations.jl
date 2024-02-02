@@ -98,7 +98,7 @@ function (p::Interpolator1D)(x::T) where T <: Number
                 result = (p.yp[ind+1]-p.yp[ind])/(p.xp[ind+1] - p.xp[ind])*(x - p.xp[ind]) + p.yp[ind]
             end
         elseif p.kind == :cubic
-            N = length(xp) 
+            N = length(p.xp) 
             if ind ∈ (0, 1)
                 xs, ys = p.xp[1:4], p.yp[1:4]
             elseif ind ∈ (N, N-1)
