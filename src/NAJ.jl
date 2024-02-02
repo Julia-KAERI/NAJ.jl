@@ -38,7 +38,7 @@ export
     iteration_gauss_siedel,
     iteration_sor,
     iteration_steepest,
-    iteration_orthogonal
+    iteration_orthogonal,
 
     ode_euler,
     ode_rk2,
