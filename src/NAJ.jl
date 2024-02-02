@@ -8,6 +8,7 @@ include("simples.jl")
 include("calculus.jl")
 include("rootfinding.jl")
 include("iterative.jl")
+include("ode.jl")
 
 export 
     SimplePolynomial,
@@ -38,5 +39,9 @@ export
     iteration_sor,
     iteration_steepest,
     iteration_orthogonal
+
+    ode_euler,
+    ode_rk2,
+    ode_rk4
 
 end # module NAJ
