@@ -4,6 +4,10 @@ using LinearAlgebra, SparseArrays
 
 include("simplepolynomials.jl")
 include("interpolations.jl")
+include("simples.jl")
+include("calculus.jl")
+include("rootfinding.jl")
+include("iterative.jl")
 
 export 
     SimplePolynomial,
@@ -14,6 +18,25 @@ export
     valdermond_polynomial,
     lagrange_polynomial,
     newton_polynomial,
-    Interpolator1D
+    Interpolator1D,
+    
+    neville, 
+
+    difference,
+    integrate_trapzoidal,
+    integrate_simpson_1_3,
+    integrate_simpson_3_8,
+    rhomberg,
+
+    rootfinding_bisection,
+    rootfinding_newton,
+    rootfinding_secant,
+    rootfinding_regula_falci,
+    
+    iteration_jacobi,
+    iteration_gauss_siedel,
+    iteration_sor,
+    iteration_steepest,
+    iteration_orthogonal
 
 end # module NAJ
