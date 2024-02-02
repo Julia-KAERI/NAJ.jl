@@ -107,7 +107,7 @@ function (p::Interpolator1D)(x::T) where T <: Number
 
         elseif p.kind ∈ (:cubic_spline_naturalbc, :cubic_spline_clampedbc)
             if ind == 0
-                result = yp[1]
+                result = p.yp[1]
             else 
                 result = evalpoly(x, p.coeffs[4*ind-3:4*ind])
             end
