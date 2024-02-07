@@ -52,7 +52,7 @@ function ode_rk4(f::Function,
     for i in 1:(Npoints-1)
         k1 = f(tn[i], xn[:, i])
         k2 = f(tn[i] + h/2, xn[:, i] .+ k1.*(h/2))
-        k3 = f(tn[i] + h/2, xn[:,i] .+ k2 .*(h/2))
+        k3 = f(tn[i] + h/2, xn[:, i] .+ k2 .*(h/2))
         k4 = f(tn[i] + h, xn[:, i] .+ k3 .* h)
         xn[:, i+1] = xn[:, i] .+ (k1 .+ (2.0 .* k2) .+ (2.0 .* k3) .+ k4).*(h/6)
     end
