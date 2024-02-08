@@ -3,6 +3,7 @@ module NAJ
 using LinearAlgebra, SparseArrays
 
 include("simplepolynomials.jl")
+include("legendre_polynomials.jl")
 include("interpolations.jl")
 include("simples.jl")
 include("calculus.jl")
@@ -11,6 +12,10 @@ include("iterative.jl")
 include("ode.jl")
 
 export 
+    AbstractSimplePolynomial,
+    order,
+    degree,
+    
     SimplePolynomial,
     monic,
     derivative,
@@ -21,6 +26,9 @@ export
     newton_polynomial,
     Interpolator1D,
     
+    LegendrePolynomial,
+    toSimplePolynomial,
+
     neville, 
 
     difference,

@@ -16,7 +16,9 @@ function legendre_polynomial_coefficients(T::Type=Float64, n::Integer = 0)
     end
 end
 
-struct LegendrePolynomial{T}
+
+
+struct LegendrePolynomial{T}<:AbstractSimplePolynomial
     order::Integer
     coeffs::Vector{T}
 
@@ -31,6 +33,9 @@ struct LegendrePolynomial{T}
     end
 end
 
+# order(p::LegendrePolynomial) = p.order
+# degree(p::LegendrePolynomial) = order(p)
+
 function (p::LegendrePolynomial)(x::T) where T <: Number
     return evalpoly(x, p.coeffs)
 end
@@ -39,3 +44,9 @@ end
 function Base.show(io::IO, p::LegendrePolynomial{T}) where T<:Real
     println(io, "LegendrePolynomial{$T}($(p.order))")
 end
+
+function toSimplePolynomial(p::LegendrePolynomial)
+    return SimplePolynomial(p.coeffs)
+end
+
+

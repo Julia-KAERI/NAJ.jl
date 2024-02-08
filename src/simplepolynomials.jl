@@ -1,11 +1,21 @@
 using LinearAlgebra
 
+
+abstract type AbstractSimplePolynomial end
+
+
+Base.length(p::AbstractSimplePolynomial) = length(p.coeffs)
+
+order(p::AbstractSimplePolynomial) = length(p)-1
+degree(p::AbstractSimplePolynomial) = order(p)
+
+
 """
     SimplePolynomial{T}
 
 간단한 polynomial 자료형.
 """
-struct SimplePolynomial{T}
+struct SimplePolynomial{T} <: AbstractSimplePolynomial
     coeffs :: Vector{T}
     
     function SimplePolynomial(a::AbstractVector{P}) where P <: Number
@@ -24,7 +34,7 @@ struct SimplePolynomial{T}
         else 
             last_nz = findlast(!iszero, a)
             a_last = max(1, isnothing(last_nz) ? 0 : last_nz)
-            return new{T}(a[1:a_last])
+            return new{T}(convert.(T, a[1:a_last]))
         end
     end
 
@@ -71,14 +81,14 @@ function Base.show(io::IO, p::SimplePolynomial{T}) where T<:Number
             end
         end
     end
-    println(io, "SimplePolynomial($(result[1:end]))")
+    println(io, "SimplePolynomial{$(eltype(p.coeffs))}($(result[1:end]))")
 end
 
 
-Base.length(p::SimplePolynomial) = length(p.coeffs)
+# Base.length(p::SimplePolynomial) = length(p.coeffs)
 
-order(p::SimplePolynomial) = length(p)-1
-degree(p::SimplePolynomial) = order(p)
+# order(p::SimplePolynomial) = length(p)-1
+# degree(p::SimplePolynomial) = order(p)
 
 
 function Base.zero(a::P) where P<:SimplePolynomial
