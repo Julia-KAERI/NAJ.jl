@@ -11,6 +11,7 @@ include("rootfinding.jl")
 include("iterative.jl")
 include("ode.jl")
 include("gaussian_quadrature.jl")
+include("bezier.jl")
 
 export 
     AbstractSimplePolynomial,
@@ -53,6 +54,8 @@ export
 
     ode_euler,
     ode_rk2,
-    ode_rk4
+    ode_rk4,
+
+    Bezier
 
 end # module NAJ
