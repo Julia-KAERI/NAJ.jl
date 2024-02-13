@@ -4,6 +4,7 @@ using LinearAlgebra
 abstract type AbstractSimplePolynomial end
 
 
+
 Base.length(p::AbstractSimplePolynomial) = length(p.coeffs)
 
 order(p::AbstractSimplePolynomial) = length(p)-1

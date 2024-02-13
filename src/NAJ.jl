@@ -10,12 +10,13 @@ include("calculus.jl")
 include("rootfinding.jl")
 include("iterative.jl")
 include("ode.jl")
+include("gaussian_quadrature.jl")
 
 export 
     AbstractSimplePolynomial,
     order,
     degree,
-    
+
     SimplePolynomial,
     monic,
     derivative,
@@ -36,6 +37,8 @@ export
     integrate_simpson_1_3,
     integrate_simpson_3_8,
     rhomberg,
+
+    integrate_gauss_quadrature,
 
     rootfinding_bisection,
     rootfinding_newton,
