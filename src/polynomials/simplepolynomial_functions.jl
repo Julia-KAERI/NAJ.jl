@@ -3,7 +3,7 @@
 
 return monic polynomial of which highest coefficient is 1
 """
-function monic(p::SimplePolynomial) where 
+function monic(p::SimplePolynomial)
     return p/p.coeffs[end]
 end
 
