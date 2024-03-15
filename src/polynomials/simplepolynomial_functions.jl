@@ -3,7 +3,7 @@
 
 return monic polynomial of which highest coefficient is 1
 """
-function monic(p::P) where P<:SimplePolynomial
+function monic(p::SimplePolynomial) where 
     return p/p.coeffs[end]
 end
 
@@ -128,4 +128,17 @@ function newton_polynomial(
     end
     return r
 
+end
+
+"""
+    least_square_poly(x::AbstractVector{<:Real}, y::AbstractVector{<:Real}, order::Integer)
+
+least square approximation for x and y with order n polynomial. Return SimplePolynomial object.
+"""
+function least_square_poly(x::AbstractVector{<:Real}, y::AbstractVector{<:Real}, order::Integer)
+    @assert length(x) == length(y)
+    @assert order ≥ 2 && order < length(x)-1
+    X = [(xi)^i for xi in x, i in 0:order]
+    a = inv(X'*X) *X' * y
+    return SimplePolynomial(a)
 end
