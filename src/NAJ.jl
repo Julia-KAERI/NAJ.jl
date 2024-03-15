@@ -2,8 +2,7 @@ module NAJ
 
 using LinearAlgebra, SparseArrays
 
-include("simplepolynomials.jl")
-include("legendre_polynomials.jl")
+include("polynomials/polynomials.jl")
 include("interpolations.jl")
 include("simples.jl")
 include("calculus.jl")
@@ -14,11 +13,16 @@ include("gaussian_quadrature.jl")
 include("bezier.jl")
 
 export 
-    AbstractSimplePolynomial,
     order,
     degree,
+    base_type,
+    base_string,
+    poly_string,
 
+    AbstractBasisPolynomial,
     SimplePolynomial,
+    LegendrePolynomial,
+    ChevyshevPolynomial,
     monic,
     derivative,
     integrate,
