@@ -19,10 +19,14 @@ export
     base_string,
     poly_string,
 
+    PolynomialBase,
     AbstractBasisPolynomial,
     SimplePolynomial,
     LegendrePolynomial,
     ChevyshevPolynomial,
+    HermitePolynomial,
+    LaguerrePolynomial,
+
     monic,
     derivative,
     integrate,

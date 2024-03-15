@@ -1,3 +1,4 @@
+include("coefficients.jl")
 
 struct SimpleBase{T}<:PolynomialBase
     order::Integer
@@ -19,75 +20,68 @@ struct SimpleBase{T}<:PolynomialBase
 end
 
 
-"""
-    legendre_polynomial_coefficients(T::Type=Float64, n::Integer = 0)
-"""
-function legendre_polynomial_coefficients(T::Type=Float64, n::Integer = 0)
-    @assert n ≥ 0
-    
-    coeffs = [[1//1, ], [0//1, 1//1]]
-    m = n+1
-    
-    if m < 2 
-        return coeffs[m]
-    else 
-        for k in 3:m
-            a1 = vcat([0], coeffs[k-1]) .* ((2k-3)//(k-1))
-            a2 = vcat(coeffs[k-2], [0, 0], ) .*((k-2)//(k-1))
-            push!(coeffs, a1.-a2 )
-        end
-        return convert.(T, coeffs[end])
-    end
-end
-
 struct LegendreBase{T}<:PolynomialBase
     order::Integer
     coeffs::Vector{T} 
 
     function LegendreBase(order::Integer = 0) 
-        @assert order ≥ 0
-        return new{Float64}(order, legendre_polynomial_coefficients(Float64, order))
+        @assert 0 ≤ order ≤ 21
+        return new{Float64}(order, legendre_coefficients[order+1])
     end
 
     function LegendreBase{T}(order::Integer = 0) where T<:Real
-        @assert order ≥ 0
-        return new{T}(order, legendre_polynomial_coefficients(T, order))
+        @assert 0 ≤ order ≤ 21
+        return new{T}(order, legendre_coefficients[order+1])
     end
 end
 
-
-function chevyshev_polynomial_coefficients(T::Type=Float64, n::Integer = 0)
-    @assert n ≥ 0
-    
-    coeffs = [[1//1, ], [0//1, 1//1]]
-    m = n+1
-    
-    if m < 2 
-        return convert.(T, coeffs[m])
-    else 
-        for k in 3:m
-            a1 = vcat([0], coeffs[k-1].*2) 
-            a2 = vcat(coeffs[k-2], [0, 0], ) 
-            push!(coeffs, a1.-a2 )
-        end
-        return convert.(T, coeffs[end])
-    end
-end
 
 struct ChevyshevBase{T}<:PolynomialBase
     order::Integer
     coeffs::Vector{T}
 
     function ChevyshevBase(order::Integer = 0) 
-        @assert order ≥ 0
-        return new{Float64}(order, chevyshev_polynomial_coefficients(Float64, order))
+        @assert 0 ≤ order ≤ 21
+        return new{Float64}(order, chevyshef_coefficients[order+1])
     end
 
     function ChevyshevBase{T}(order::Integer = 0) where T<:Real
-        @assert order ≥ 0
-        return new{T}(order, chevyshev_polynomial_coefficients(T, order))
+        @assert 0 ≤ order ≤ 21
+        return new{T}(order, chevyshef_coefficients[order+1])
     end
 end
+
+struct HermiteBase{T}<:PolynomialBase
+    order::Integer
+    coeffs::Vector{T}
+
+    function HermiteBase(order::Integer = 0) 
+        @assert 0 ≤ order ≤ 21
+        return new{Float64}(order, hermite_coefficients[order+1])
+    end
+
+    function HermiteBase{T}(order::Integer = 0) where T<:Real
+        @assert 0 ≤ order ≤ 21
+        return new{T}(order, hermite_coefficients[order+1])
+    end
+end
+
+
+struct LaguerreBase{T}<:PolynomialBase
+    order::Integer
+    coeffs::Vector{T}
+
+    function LaguerreBase(order::Integer = 0) 
+        @assert 0 ≤ order ≤ 21
+        return new{Float64}(order, laguerre_coefficients[order+1])
+    end
+
+    function LaguerreBase{T}(order::Integer = 0) where T<:Real
+        @assert 0 ≤ order ≤ 21
+        return new{T}(order, laguerre_coefficients[order+1])
+    end
+end
+
 
 struct BasisPolynomial{T, X} <:AbstractBasisPolynomial{T, X}
     coeffs::Vector{T}
@@ -115,10 +109,55 @@ struct BasisPolynomial{T, X} <:AbstractBasisPolynomial{T, X}
 
 end
 
+@doc"""
+    SimplePolynomal{T}(coeffs::AbstractVector)
 
+Construct a polynomial from its coefficients `coeffs`, lowest order first. For example, `coeff[1]` 
+be constant term and `coeff[2]` be the coefficient of `x`. `T` is the type of coefficients. The 
+argument `coeffs` are convected to type `T` vector.
+"""
 const SimplePolynomial{T} = BasisPolynomial{T, SimpleBase}
+
+@doc"""
+    LegendrePolynomial{T}(coeffs::AbstractVector)
+
+Construct a polynomial from Legendre polynomials. `LegendrePolynoimal([1, 2])` construct a polynmial 
+function of `1 L_0(x) + 2 L_1(x)`, where `L_k(x)` is k-th order Legendre polynomial. `T` is the type 
+of coefficients. The argument `coeffs` are convected to type `T` vector.
+"""
 const LegendrePolynomial{T} = BasisPolynomial{T, LegendreBase}
+
+@doc"""
+    ChevyshevPolynomial{T}(coeffs::AbstractVector)
+
+Construct a polynomial from Chevyshev polynomials of type I. `ChevyshevPolynoimal([1, 2])` construct 
+a polynmial function of `1 T_0(x) + 2 T_1(x)`, where `T_k(x)` is k-th order Chevyshev polynomial. 
+`T` is the type of coefficients. The argument `coeffs` are convected to type `T` vector.
+"""
 const ChevyshevPolynomial{T} = BasisPolynomial{T, ChevyshevBase}
+
+@doc"""
+    HermitePolynomial{T}(coeffs::AbstractVector)
+
+Construct a polynomial from Hermite polynomials (for physics). `HermitePolynoimal([1, 2])` construct
+a polynmial function of `1 H_0(x) + 2 H_1(x)`, where `H_k(x)` is k-th order Hermite polynomial. 
+`T` is the type of coefficients. The argument `coeffs` are convected to type `T` vector.
+
+Note
+====
+Two kinds of Hermite polynomials are used(see https://en.wikipedia.org/wiki/Hermite_polynomials). This
+Herimite is known for physicist's Hermite polynomials
+"""
+const HermitePolynomial{T} = BasisPolynomial{T, HermiteBase}
+
+@doc"""
+    LaguerrePolynomial{T}(coeffs::AbstractVector)
+
+Construct a polynomial from Laguerre polynomials of type I. `LaguerrePolynoimal([1, 2])` construct 
+a polynmial function of `1 L_0(x) + 2 L_1(x)`, where `L_k(x)` is k-th order Chevyshev polynomial. 
+`T` is the type of coefficients. The argument `coeffs` are convected to type `T` vector.
+"""
+const LaguerrePolynomial{T} = BasisPolynomial{T, LaguerreBase}
 
 
 function SimplePolynomial(a::AbstractVector{T}) where {T<:Real}
@@ -128,6 +167,8 @@ end
 function SimplePolynomial{P}(a::AbstractVector{T}) where {P<:Real, T<:Real}
     return BasisPolynoimal{P}(a, SimpleBase)
 end
+
+
 
 function LegendrePolynomial(a::AbstractVector{T}) where T<:Real
     return BasisPolynomial(a, LegendreBase)
@@ -141,10 +182,26 @@ function ChevyshevPolynomial(a::AbstractVector{T}) where T<:Real
     return BasisPolynomial(a, ChevyshevBase)
 end
 
-
 function ChevyshevPolynomial{P}(a::AbstractVector{T}) where {P<:Real, T<:Real}
     return BasisPolynomial{P}(a, ChevyshevBase)
 end
+
+function HermitePolynomial(a::AbstractVector{T}) where T<:Real
+    return BasisPolynomial(a, HermiteBase)
+end
+
+function HermitePolynomial{P}(a::AbstractVector{T}) where {P<:Real, T<:Real}
+    return BasisPolynomial{P}(a, HermiteBase)
+end
+
+function LaguerrePolynomial(a::AbstractVector{T}) where T<:Real
+    return BasisPolynomial(a, LaguerreBase)
+end
+
+function LaguerrePolynomial{P}(a::AbstractVector{T}) where {P<:Real, T<:Real}
+    return BasisPolynomial{P}(a, LaguerreBase)
+end
+
 
 function SimplePolynomial(p::BasisPolynomial)
     if isa(p, SimplePolynomial)
@@ -168,10 +225,14 @@ end
 base_string(p::SimpleBase) = p.order > 0 ? "x^$(p.order)" : ""
 base_string(p::LegendreBase) = "P_$(p.order)(x)"
 base_string(p::ChevyshevBase) = "T_$(p.order)(x)"
+base_string(p::HermiteBase) = "H_$(p.order)(x)"
+base_string(p::LaguerreBase) = "L_$(p.order)(x)"
 
 poly_string(p::SimplePolynomial) = "Simple Polynomial"
 poly_string(p::LegendrePolynomial) = "Legendre Polynomial"
 poly_string(p::ChevyshevPolynomial) = "Chevyshev Polynomnial"
+poly_string(p::HermitePolynomial) = "Hermite Polynomnial"
+poly_string(p::LaguerrePolynomial) = "Laguerre Polynomnial"
 
 function Base.show(io::IO, p::AbstractBasisPolynomial{T, X}) where {T, X}
     result = ""

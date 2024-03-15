@@ -8,11 +8,11 @@ function monic(p::SimplePolynomial)
 end
 
 """
-    derivative(p::SimplePolynomial)
+    differentiate(p::SimplePolynomial)
 
 return derivatives of polynomial p
 """
-function derivative(p::SimplePolynomial)
+function differentiate(p::SimplePolynomial)
     if length(p) < 2 
         return SimplePolynomial([one(eltype(p.coeffs)), ])
     else
