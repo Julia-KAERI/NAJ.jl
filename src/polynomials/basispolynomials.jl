@@ -166,7 +166,7 @@ function SimplePolynomial(p::BasisPolynomial)
 end
 
 base_string(p::SimpleBase) = p.order > 0 ? "x^$(p.order)" : ""
-base_string(p::LegendreBase) = "L_$(p.order)(x)"
+base_string(p::LegendreBase) = "P_$(p.order)(x)"
 base_string(p::ChevyshevBase) = "T_$(p.order)(x)"
 
 poly_string(p::SimplePolynomial) = "Simple Polynomial"
