@@ -30,6 +30,7 @@ export
     valdermond_polynomial,
     lagrange_polynomial,
     newton_polynomial,
+    least_square_poly,
     Interpolator1D,
     
     LegendrePolynomial,
