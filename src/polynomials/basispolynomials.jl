@@ -169,7 +169,6 @@ function SimplePolynomial{P}(a::AbstractVector{T}) where {P<:Real, T<:Real}
 end
 
 
-
 function LegendrePolynomial(a::AbstractVector{T}) where T<:Real
     return BasisPolynomial(a, LegendreBase)
 end
@@ -177,6 +176,17 @@ end
 function LegendrePolynomial{P}(a::AbstractVector{T}) where {P<:Real, T<:Real}
     return BasisPolynomial{P}(a, LegendreBase)
 end
+
+
+function LegendreBasePolynomial(order::Integer)
+    @assert order ≥ 0
+    coeffs = zeros(order+1)
+    coeffs[end]=1
+    return LegendrePolynomial(coeffs)
+end
+
+
+
 
 function ChevyshevPolynomial(a::AbstractVector{T}) where T<:Real
     return BasisPolynomial(a, ChevyshevBase)
@@ -186,6 +196,16 @@ function ChevyshevPolynomial{P}(a::AbstractVector{T}) where {P<:Real, T<:Real}
     return BasisPolynomial{P}(a, ChevyshevBase)
 end
 
+
+function ChevyshevBasePolynomial(order::Integer)
+    @assert order ≥ 0
+    coeffs = zeros(order+1)
+    coeffs[end]=1
+    return ChevyshevPolynomial(coeffs)
+end
+
+
+
 function HermitePolynomial(a::AbstractVector{T}) where T<:Real
     return BasisPolynomial(a, HermiteBase)
 end
@@ -194,6 +214,15 @@ function HermitePolynomial{P}(a::AbstractVector{T}) where {P<:Real, T<:Real}
     return BasisPolynomial{P}(a, HermiteBase)
 end
 
+function HermiteBasePolynomial(order::Integer)
+    @assert order ≥ 0
+    coeffs = zeros(order+1)
+    coeffs[end]=1
+    return HermitePolynomial(coeffs)
+end
+
+
+
 function LaguerrePolynomial(a::AbstractVector{T}) where T<:Real
     return BasisPolynomial(a, LaguerreBase)
 end
@@ -201,6 +230,15 @@ end
 function LaguerrePolynomial{P}(a::AbstractVector{T}) where {P<:Real, T<:Real}
     return BasisPolynomial{P}(a, LaguerreBase)
 end
+
+function LaguerreBasePolynomial(order::Integer)
+    @assert order ≥ 0
+    coeffs = zeros(order+1)
+    coeffs[end]=1
+    return LaguerrePolynomial(coeffs)
+end
+
+
 
 
 function SimplePolynomial(p::BasisPolynomial)

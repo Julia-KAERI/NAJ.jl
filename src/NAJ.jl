@@ -23,9 +23,13 @@ export
     AbstractBasisPolynomial,
     SimplePolynomial,
     LegendrePolynomial,
+    LegendreBasePolynomial,
     ChevyshevPolynomial,
+    ChevyshevBasePolynomial,
     HermitePolynomial,
+    HermiteBasePolynomia,
     LaguerrePolynomial,
+    LaguerreBasePolynomial,
 
     monic,
     derivative,
