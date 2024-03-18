@@ -1,5 +1,10 @@
-function difference(f::Function, x::T, ϵ = 1.0e-6, npts = 3) where T<:Real
+function difference(
+    f, 
+    x::T, 
+    ϵ = 1.0e-6, 
+    npts = 3) where T<:Real
     @assert npts ∈ (3, 5)
+    @assert applicable(f, Number) "f should be function for number"
     eps = convert(T, ϵ)
     if npts == 3
         r = (f(x+eps) - f(x-eps))/(2*eps)
@@ -12,11 +17,12 @@ function difference(f::Function, x::T, ϵ = 1.0e-6, npts = 3) where T<:Real
 end
 
 function integrate_trapzoidal(
-    f::Function, 
+    f, 
     a::Number, 
     b::Number, 
     n::Integer)
     
+    @assert applicable(f, Number) "f should be function for number"
     a, b = minmax(a, b)
     h = (b-a)/(n-1)
     x = range(a, b, length = n)
@@ -27,12 +33,13 @@ function integrate_trapzoidal(
 end
 
 function integrate_simpson_1_3(
-    f::Function, 
+    f, 
     a::Number, 
     b::Number, 
     n::Integer)
     
     @assert n %2 == 1
+    @assert applicable(f, Number) "f should be function for number"
     a, b = minmax(a, b)
     h = (b-a)/(n-1)
     x = range(a, b, length = n)
@@ -44,12 +51,13 @@ function integrate_simpson_1_3(
 end
 
 function integrate_simpson_3_8(
-    f::Function, 
+    f, 
     a::Number, 
     b::Number, 
     n::Integer)
     
     @assert n %3 == 1
+    @assert applicable(f, Number) "f should be function for number"
     a, b = minmax(a, b)
     h = (b-a)/(n-1)
     x = range(a, b, length = n)
@@ -62,8 +70,13 @@ function integrate_simpson_3_8(
     return result * h * 3 / 8
 end
 
-function rhomberg(f::Function, a::Number, b::Number, order::Integer = 4)
+function rhomberg(
+    f, 
+    a::Number, 
+    b::Number, 
+    order::Integer = 4)
     @assert order > 2
+    @assert applicable(f, Number) "f should be function for number"
     N = zeros(order, order) 
     N[:, 1]= [integrate_trapzoidal(f, a, b, 2^k) for k in 1:order]
     for m = 1:order, k = 1:order-m
