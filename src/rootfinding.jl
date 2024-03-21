@@ -1,5 +1,5 @@
 function rootfinding_bisection(
-    f::Function,                    # 함수
+    f,                              # 함수
     a::Real,                        # 구간값 1
     b::Real,                        # 구간값 2
     xtol::Real = 1.0e-8,            # 해의 오차의 허용 범위
@@ -24,7 +24,7 @@ function rootfinding_bisection(
 end
 
 function rootfinding_newton(
-    f::Function,                    # 함수
+    f,                              # 함수
     df::Function,                   # 도함수
     p::Real,                        # 시작값
     MaxIter::Int64=100_000,         # 최대 반복 횟수
@@ -49,7 +49,7 @@ function rootfinding_newton(
 end
 
 function rootfinding_secant(
-    f::Function,                # 함수
+    f,                          # 함수
     p0::Real,                   # 시작값 1
     p1::Real,                   # 시작값 2
     MaxIter::Int64 = 100_000,   # 최대 반복 횟수
@@ -72,7 +72,7 @@ function rootfinding_secant(
 end
 
 function rootfinding_regula_falci(
-    f::Function,                    # 함수
+    f,                              # 함수
     a::Real,                        # 구간값 1
     b::Real,                        # 구간값 2
     MaxIter::Int64 = 100_000,       # 최대 반복 회수

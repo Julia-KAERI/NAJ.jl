@@ -1,5 +1,5 @@
 function ode_euler(
-    fp::Function, 
+    fp, 
     t1::Real, 
     x1::Vector{<:Real}, 
     Npoints::Integer, 
@@ -15,7 +15,7 @@ function ode_euler(
 end
 
 function ode_euler(
-    fp::Function,
+    fp,
     t1::Real, 
     x1::Real,
     Npoints::Integer, 
@@ -25,7 +25,8 @@ function ode_euler(
     return tn, xn[1,:]
 end
 
-function ode_rk2(f::Function, 
+function ode_rk2(
+    fp, 
     t1::Real, 
     x1::Vector{<:Real}, 
     Npoints::Integer, 
@@ -34,14 +35,15 @@ function ode_rk2(f::Function,
     xn = zeros((length(x1), length(tn)))
     xn[:,1] = x1
     for i in 1:(Npoints-1)
-        k1 = f(tn[i], xn[:,i])
-        k2 = f(tn[i] + h/2, xn[:, i] .+ k1.*(h/2))
+        k1 = fp(tn[i], xn[:,i])
+        k2 = fp(tn[i] + h/2, xn[:, i] .+ k1.*(h/2))
         xn[:, i+1] = xn[:,i] .+ (k1 .+ k2) .*(h/2)
     end 
     return tn, xn
 end
 
-function ode_rk4(f::Function, 
+function ode_rk4(
+    fp,
     t1::Real, 
     x1::Vector{<:Real}, 
     Npoints::Integer, 
@@ -50,10 +52,10 @@ function ode_rk4(f::Function,
     xn = zeros((length(x1), length(tn)))
     xn[:,1] = x1
     for i in 1:(Npoints-1)
-        k1 = f(tn[i], xn[:, i])
-        k2 = f(tn[i] + h/2, xn[:, i] .+ k1.*(h/2))
-        k3 = f(tn[i] + h/2, xn[:, i] .+ k2 .*(h/2))
-        k4 = f(tn[i] + h, xn[:, i] .+ k3 .* h)
+        k1 = fp(tn[i], xn[:, i])
+        k2 = fp(tn[i] + h/2, xn[:, i] .+ k1.*(h/2))
+        k3 = fp(tn[i] + h/2, xn[:, i] .+ k2 .*(h/2))
+        k4 = fp(tn[i] + h, xn[:, i] .+ k3 .* h)
         xn[:, i+1] = xn[:, i] .+ (k1 .+ (2.0 .* k2) .+ (2.0 .* k3) .+ k4).*(h/6)
     end
     return tn, xn
