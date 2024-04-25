@@ -3,6 +3,7 @@ module NAJ
 using LinearAlgebra, SparseArrays
 
 include("polynomials/polynomials.jl")
+include("logspace.jl")
 include("interpolations.jl")
 include("simples.jl")
 include("calculus.jl")
@@ -18,6 +19,9 @@ export
     base_type,
     base_string,
     poly_string,
+
+    LogSpaceRange,
+    logspace,
 
     PolynomialBase,
     AbstractBasisPolynomial,
