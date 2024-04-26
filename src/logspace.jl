@@ -35,11 +35,6 @@ function Base.getindex(p::LogSpacingRange, i::Int64)
     end
 end
 
-function logspace(a, b, n::Integer=10, base::Real=10)
-    return LogSpacingRange(a, b, n, base)
-end
-
-
 """
         logspace(a, b, n::Integer=10, base::Real=10)
     
