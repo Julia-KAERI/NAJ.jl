@@ -12,7 +12,7 @@ include("iterative.jl")
 include("ode.jl")
 include("gaussian_quadrature.jl")
 include("bezier.jl")
-
+include("modular.jl")
 export 
     order,
     degree,
@@ -22,6 +22,9 @@ export
 
     LogSpaceRange,
     logspace,
+
+    Mod,
+    PrimeMode,
 
     PolynomialBase,
     AbstractBasisPolynomial,
