@@ -1,7 +1,7 @@
 abstract type AbstractModular{N} end
 abstract type AbstractPrimeModular{N} <: AbstractModular{N} end
 
-const max_modular = 100_000
+const max_modular = 1_000_000
 
 function isprime(v::Integer)
     @assert 1<v<max_modular 

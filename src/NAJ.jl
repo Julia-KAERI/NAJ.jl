@@ -25,6 +25,7 @@ export
 
     Mod,
     PrimeMode,
+    isprime,
 
     PolynomialBase,
     AbstractBasisPolynomial,
