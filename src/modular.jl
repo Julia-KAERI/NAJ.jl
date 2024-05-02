@@ -1,13 +1,12 @@
 abstract type AbstractModular{N} end
 abstract type AbstractPrimeModular{N} <: AbstractModular{N} end
 
-const max_modular = 1_000_000
+const max_modular = 1_000_000_000
 
 function isprime(v::Integer)
     @assert 1<v<max_modular 
-    k = floor(Int64, √v)
     result = true
-    for x in 2:k
+    for x in 2:floor(Int64, √v)
         if v % x == 0
             result = false
             break
@@ -57,22 +56,25 @@ function Base.:-(a::AbstractModular{N}, b::AbstractModular{N}) where N
     return Mod{N}(a.value-b.value)
 end
 
-function Base.:*(a::AbstractPrimeModular{N}, b::AbstractPrimeModular{N}) where N 
+function Base.:*(a::AbstractModular{N}, b::AbstractModular{N}) where N 
     return Mod{N}(a.value*b.value)
 end
 
-function Base.:^(a::AbstractModular{N}, n::Integer) where N
-    return Mod{N}(a.value^n)
-end
 
-"""
-    minv(a::AbstractPrimeModular{N})
-
-multiplicative inverse of a
-"""
-function minv(a::AbstractPrimeModular{N}) where N
+function Base.:inv(a::AbstractPrimeModular{N}) where N
     return Mod{N}(a.value^(N-2))
 end
+
+
+function Base.:^(a::AbstractModular{N}, n::Integer) where N
+     return Mod{N}(a.value^n)
+end
+
+
+# function Base.:^(a::AbstractModular{N}, k::Integer) where N
+#     r = (k > 0) ? k % (N-1) : N + (k % (N-1))
+#     return Mod{N}(a.value^(r))
+# end
 
 function Base.:/(a::AbstractPrimeModular{N}, b::AbstractPrimeModular{N}) where N
     if b == zero(b)
