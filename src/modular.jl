@@ -27,7 +27,7 @@ struct PrimeMod{N} <: AbstractPrimeModular{N}
 end
 
 struct Mod{N} <: AbstractModular{N}
-    val::Int64
+    value::Int64
 
     function Mod{N}(x::T) where {N, T<:Integer}
         @assert N > 1 "Modulos must be larger than 1"
@@ -69,12 +69,6 @@ end
 function Base.:^(a::AbstractModular{N}, n::Integer) where N
      return Mod{N}(a.value^n)
 end
-
-
-# function Base.:^(a::AbstractModular{N}, k::Integer) where N
-#     r = (k > 0) ? k % (N-1) : N + (k % (N-1))
-#     return Mod{N}(a.value^(r))
-# end
 
 function Base.:/(a::AbstractPrimeModular{N}, b::AbstractPrimeModular{N}) where N
     if b == zero(b)
