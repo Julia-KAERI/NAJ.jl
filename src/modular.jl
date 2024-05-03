@@ -1,5 +1,4 @@
-abstract type AbstractModular{N} end
-abstract type AbstractPrimeModular{N} <: AbstractModular{N} end
+abstract type AbstractMod{T, N} end 
 
 const max_modular = 1_000_000_000
 
@@ -15,64 +14,68 @@ function isprime(v::Integer)
     return result
 end
 
-struct PrimeMod{N} <: AbstractPrimeModular{N}
-    value::Int64
+struct PrimeMod{T, N} <: AbstractMod{T, N}
+    value::T
     
-    function PrimeMod{N}(x::T) where {N, T<:Integer}
+    function PrimeMod{T, N}(x::Integer) where {T<:Integer, N}
         @assert N > 1 "Modulos must be larger than 1"
         @assert isprime(N) "Must be a prime number"
         r = (x ≥ 0) ? x%N : (x%N)+N 
-        return new{N}(r)
+        return new{T, N}(r)
     end
 end
 
-struct Mod{N} <: AbstractModular{N}
-    value::Int64
+struct Mod{T, N} <: AbstractMod{T, N}
+    value::T
 
-    function Mod{N}(x::T) where {N, T<:Integer}
+    function Mod{T, N}(x::Integer) where {T<:Integer, N}
         @assert N > 1 "Modulos must be larger than 1"
+        x = T(x)
         r = (x ≥ 0) ? x%N : (x%N)+N 
         if isprime(N)
-            return PrimeMod{N}(r)
+            return PrimeMod{T, N}(r)
         else 
-            return new{N}(r)
+            return new{T, N}(r)
         end
     end
 end
 
-function Base.show(io::IO, x::AbstractModular{N}) where N 
-    println(io, "$(x.value) ($N)")
+Mod{N}(x::Integer) where {N} = Mod{Int64, N}(x)
+PrimeMod{N}(x::Integer) where {N} = PrimeMod{Int64, N}(x)
+
+
+function Base.show(io::IO, x::AbstractMod{T, N}) where {T, N} 
+    println(io, "$(x.value)_$N")
 end
 
-Base.zero(a::AbstractModular{N}) where N = Mod{N}(0)
-Base.one(a::AbstractModular{N}) where N = Mod{N}(1)
-Base.:-(a::AbstractModular{N}) where N = Mod{N}(-a.value)
+Base.zero(a::AbstractMod{T, N}) where {T, N}  = Mod{T, N}(0)
+Base.one(a::AbstractMod{T, N}) where {T, N}  = Mod{T, N}(1)
+Base.:-(a::AbstractMod{T, N}) where {T, N}  = Mod{T, N}(-a.value)
+Base.:isequal(a::AbstractMod{T, N}, b::AbstractMod{T, N}) where {T, N} = (a.value == b.value)
 
-function Base.:+(a::AbstractModular{N}, b::AbstractModular{N}) where N 
-    return Mod{N}(a.value+b.value)
+function Base.:+(a::AbstractMod{T, N}, b::AbstractMod{T, N}) where {T, N} 
+    return Mod{T, N}(a.value+b.value)
 end
 
-function Base.:-(a::AbstractModular{N}, b::AbstractModular{N}) where N 
-    return Mod{N}(a.value-b.value)
+function Base.:-(a::AbstractMod{T, N}, b::AbstractMod{T, N}) where {T, N}  
+    return Mod{T, N}(a.value-b.value)
 end
 
-function Base.:*(a::AbstractModular{N}, b::AbstractModular{N}) where N 
-    return Mod{N}(a.value*b.value)
+function Base.:*(a::AbstractMod{T, N}, b::AbstractMod{T, N}) where {T, N}  
+    return Mod{T, N}(a.value*b.value)
 end
 
-
-function Base.:inv(a::AbstractPrimeModular{N}) where N
-    return Mod{N}(a.value^(N-2))
+function Base.:inv(a::PrimeMod{T, N}) where {T, N} 
+    return Mod{T, N}(a.value^(N-2))
 end
 
-
-function Base.:^(a::AbstractModular{N}, n::Integer) where N
-     return Mod{N}(a.value^n)
+function Base.:^(a::AbstractMod{T, N}, n::Integer) where {T, N} 
+     return Mod{T, N}(a.value^n)
 end
 
-function Base.:/(a::AbstractPrimeModular{N}, b::AbstractPrimeModular{N}) where N
+function Base.:/(a::PrimeMod{T, N}, b::PrimeMod{T, N}) where {T, N} 
     if b == zero(b)
         throw(DivideError)
     end
-    return a*minv(b)
+    return a*inv(b)
 end
