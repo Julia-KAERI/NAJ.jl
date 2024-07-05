@@ -76,7 +76,9 @@ export
     ode_euler,
     ode_rk2,
     ode_rk4,
-
+    InitialValueOdeProblem,
+    solve,
+    
     Bezier
 
 end # module NAJ
