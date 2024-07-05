@@ -9,7 +9,8 @@ include("simples.jl")
 include("calculus.jl")
 include("rootfinding.jl")
 include("iterative.jl")
-include("ode.jl")
+include("ode_initial.jl")
+include("ode_boundary.jl")
 include("gaussian_quadrature.jl")
 include("bezier.jl")
 include("modular.jl")
@@ -78,7 +79,9 @@ export
     ode_rk4,
     InitialValueOdeProblem,
     solve,
-    
+
+    linear_shooting,
+
     Bezier
 
 end # module NAJ
