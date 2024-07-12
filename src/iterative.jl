@@ -2,30 +2,31 @@ function iteration_jacobi(
     A::AbstractMatrix, 
     b::Vector, 
     x0::Vector; 
-    etol::Number = 1.0e-5,
-    Maxiter = 100_000)
-    @assert size(A)[1] == size(A)[2] == size(b)[1]
+    etol::Number = 1.0e-10,
+    Maxiter::Integer = 100_000)
+    n = size(A)[1]
+    @assert n == size(A)[2] == size(b)[1]
+    @assert Maxiter > 3
+    x = zero(x0)
     
-    x = similar(x0)
-
-    D = Diagonal(A)
-    L = -LowerTriangular(A) .+ D
-    U = -UpperTriangular(A) .+ D
-
-    Dinv = inv(D)
-    T = Dinv*(L+U) 
-    c = Dinv * b
-    for i in 1:Maxiter
-        x = T*x0 + c
-        if norm(x .- x0, Inf)/norm(x, Inf)< etol
-            nitter = i
-            println(nitter)
-            return x
+    for niter in 1:Maxiter
+        @inbounds for i in 1:length(x0)
+            @inbounds for j in 1:length(x0)
+                if i ≠ j
+                    x[i] += -A[i,j] * x0[j]
+                end
+            end
+            @inbounds x[i] = (x[i]+b[i])/A[i, i] 
+        end
+        if norm(x .- x0, Inf) / norm(x, Inf) < etol
+            break
         else 
-            x0 = x
+            x0 = x[:]
+            x = zero(x0)
+
         end
     end
-    return nothing
+    return x
 end
 
 function iteration_gauss_siedel(
