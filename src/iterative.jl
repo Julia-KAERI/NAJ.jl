@@ -29,34 +29,35 @@ function iteration_jacobi(
     return x
 end
 
-function iteration_gauss_siedel(
+function iteration_seidel(
     A::AbstractMatrix, 
     b::Vector, 
     x0::Vector; 
-    etol::Number = 1.0e-5, 
+    etol::Number = 1.0e-10, 
     Maxiter = 100_000)
     @assert size(A)[1] == size(A)[2] == size(b)[1]
     
-    x = similar(x0)
-
-    D = Diagonal(A)
-    L = -LowerTriangular(A) .+ D
-    U = -UpperTriangular(A) .+ D
-
-    DLinv = inv(D-L)
-    T = DLinv*U 
-    c = DLinv * b
-    for i in 1:Maxiter
-        x = T*x0 + c
-        if norm(x .- x0, Inf)/norm(x, Inf)< etol
-            nitter = i
-            println(nitter)
-            return x
+    x = zero(x0)
+    for niter in 1:Maxiter
+        @inbounds for i in 1:length(x0)
+            @inbounds for j in 1:length(x0)
+                if j < i
+                    x[i] += - A[i, j]*x[j]
+                elseif j>i
+                    x[i] += - A[i, j]*x0[j] 
+                end
+            end
+            @inbounds x[i] = (x[i]+b[i])/A[i, i] 
+        end
+        if norm(x .- x0, Inf) / norm(x, Inf) < etol
+            break
         else 
-            x0 = x
+            x0 = x[:]
+            x = zero(x0)
+
         end
     end
-    return nothing
+    return x
 end
 
 
@@ -65,33 +66,33 @@ function iteration_sor(
     b::Vector, 
     x0::Vector,
     ω::Real; 
-    etol::Number = 1.0e-5, 
+    etol::Number = 1.0e-10, 
     Maxiter = 100_000)
 
-    @assert 0.0 < ω < 2
-    x = similar(x0)
-
-    D = Diagonal(A)
-    L = -LowerTriangular(A) .+ D
-    U = -UpperTriangular(A) .+ D
-
-    Dwinv = inv(D-ω * L)
-    T = Dwinv * ((1-ω) * D + ω * U)
-    c = ω * Dwinv * b
-    for i in 1:Maxiter
-        x = T*x0 + c
-        if norm(x .- x0, Inf)/norm(x, Inf)< etol
-            
-            nitter = i
-            println(nitter)
+    @assert 0 < ω < 2
+    
+    x = zero(x0)
+    for nitter in 1:Maxiter
+        @inbounds for i ∈ 1:length(x0)
+            @inbounds for j ∈ 1:length(x0)
+                if j < i
+                    x[i] += -A[i, j] *x[j]
+                elseif j > i
+                    x[i] += -A[i, j] *x0[j]
+                end
+            end
+            x[i] = (1-ω)*x0[i] + 1/A[i, i] * (ω*b[i] + ω *  x[i])
+        end
+        if norm(x .- x0, Inf)/norm(x, Inf)< etol    
             return x
         else 
-            x0 = x
+            x0 = x[:]
+            x = zero(x)
         end
     end
-    return nothing
-    
+    return x
 end
+
 
 function iteration_steepest(
     A::AbstractMatrix, 
