@@ -57,7 +57,7 @@ end
 """
     polynomial_from_roots(xp::Vector{T}) where T<:Number
 
-return monic polynomial having roots xp[1],..., xp[end].
+return monic polynomial having roots xp.
 """
 function polynomial_from_roots(xp::AbstractVector{T}) where T<:Number 
     return prod([SimplePolynomial([-x0, 1]) for x0 in xp])
@@ -66,7 +66,7 @@ end
 """
     valdermond_polynomial(xp, yp)
 
-return Valdermond Polynomial. 
+return Valdermond Polynomial according to the given arrays xp and yp.
 """
 function valdermond_polynomial(
     xp::AbstractVector{T1}, 
@@ -79,9 +79,9 @@ function valdermond_polynomial(
 end
 
 """
-    valdermond_polynomial(xp, yp)
+    lagrange_polynomial(xp, yp)
 
-return Lagrange Polynomial. 
+return Lagrange Polynomial according to the given arrays xp and yp.
 """
 function lagrange_polynomial(
     xp::AbstractVector{T1}, 
@@ -108,7 +108,7 @@ end
 """
     valdermond_polynomial(xp, yp)
 
-return Newton Polynomial.
+return Newton Polynomial according to the given arrays xp and yp.
 """
 
 function newton_polynomial(
